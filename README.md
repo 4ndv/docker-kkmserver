@@ -1,5 +1,10 @@
 # docker-kkmserver
 
+## Отличия от [апстрима](https://github.com/alexanderfefelov/docker-kkmserver)
+
+- Последняя на данный момент форка версия
+- Сборка как под amd64, так и под armv7
+
 ## Что это?
 
 docker-kkmserver -- это сервер печати чеков/этикеток [KkmServer](https://kkmserver.ru/) в контейнере Docker.
@@ -9,9 +14,7 @@ docker-kkmserver -- это сервер печати чеков/этикеток
 Создайте образ (это действие можно пропустить):
 
 ```bash
-docker build \
-  --tag quay.io/alexanderfefelov/kkmserver \
-  .
+docker build .
 ```
 
 Запустите контейнер:
@@ -26,7 +29,7 @@ docker run \
   --publish 5893:5893 \
   --health-cmd /healthcheck.sh --health-start-period 3s --health-interval 1m --health-timeout 1s --health-retries 3 \
   --log-opt max-size=10m --log-opt max-file=5 \
-  quay.io/alexanderfefelov/kkmserver
+  andv/kkmserver
 ```
 
 При использовании кассового аппарата, подключенного через USB-порт, необходимо "прокинуть"
@@ -38,7 +41,7 @@ docker run \
   ...
   --device /dev/ttyACM0:/dev/ttyACM0 \
   ...
-  quay.io/alexanderfefelov/kkmserver
+  andv/kkmserver
 ```
 
 Узнать имя устройства можно с помощью команды `dmesg`:
@@ -105,7 +108,7 @@ docker rm --force kkmserver
 Удалите образ:
 
 ```bash
-docker image rm quay.io/alexanderfefelov/kkmserver
+docker image rm andv/kkmserver
 ```
 
 :fire: Удалите данные (настройки и логи):

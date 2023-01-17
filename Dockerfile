@@ -1,10 +1,11 @@
 FROM ubuntu:20.04
 
-ARG KKMSERVER_VERSION=2.1.40.71_22.06.2021
-ARG KKMSERVER_STUFF=KkmServer_$KKMSERVER_VERSION.deb
+ARG KKMSERVER_VERSION
+ARG TARGETARCH
+ARG KKMSERVER_PACKAGE=kkm_server_${KKMSERVER_VERSION}_${TARGETARCH}.deb
 
 ADD container/ /
-ADD https://github.com/alexanderfefelov/kkmserver-dist/raw/main/deb/$KKMSERVER_STUFF /
+ADD deb/ /deb
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update \
@@ -18,10 +19,10 @@ RUN apt-get -qq update \
        libssl1.1 \
        netcat `# For health checks` \
        openssl \
-  && dpkg --install $KKMSERVER_STUFF \
+  && dpkg --install deb/${KKMSERVER_PACKAGE} \
   && apt-get -qq clean \
   && rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-  && rm --force $KKMSERVER_STUFF
+  && rm --recursive --force /deb
 
 ENV LANG ru_RU.utf8
 
